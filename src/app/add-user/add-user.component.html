@@ -1,0 +1,102 @@
+<button type="submit" 
+    class="btn btn-primary" 
+    id="newEntryButton" 
+    (click)="newUser()">Add new user
+</button>
+<div *ngIf="UserForm">
+        <div class="container">
+<form #newUserForm="ngForm">
+        <div class="container">
+    <div class="form-row">
+            <div class="col-md-4 mb-3">
+                        <label for="firstname">First Name</label>
+                        <input type="text"
+                            class="form-control"
+                            name="firstname"
+                            required
+                            [(ngModel)]="userData.FirstName"
+                            #firstname="ngModel">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="middlename">Middle Name</label>
+                        <input type="text"
+                            class="form-control"
+                            name="middlename"
+                            [(ngModel)]="userData.MiddleName"
+                            #middlename="ngModel">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="lastname">Last Name</label>
+                        <input type="text"
+                            class="form-control"
+                            name="lastname"
+                            required
+                            [(ngModel)]="userData.LastName"
+                            #lastname="ngModel">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-md-8 mb-6">
+                        <label for="email">E-Mail</label>
+                        <input type="text"
+                            class="form-control"
+                            name="email"
+                            required
+                            email
+                            [(ngModel)]="userData.Email"
+                            #email="ngModel">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="phone">Phone Number</label>
+                        <input type="text"
+                            class="form-control"
+                            name="phone"
+                            required
+                            pattern="^((\\+91-?)|0)?[0-9]{10}$"
+                            [(ngModel)]="userData.phoneno"
+                            #phone="ngModel">
+
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <label for="role">Role</label>
+                        <select class="form-control"
+                            name="role"
+                            [(ngModel)]="userData.role"
+                            required
+                            #role="ngModel">
+                            <option *ngFor="let role of storeRole"> {{ role }}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="address">Address</label>
+                        <input type="text"
+                            class="form-control"
+                            name="address"
+                            [(ngModel)]="userData.Address">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <input type="button"
+                        class="btn btn-success"
+                        (click)="saveData(newUserForm)"
+                        value="Save">
+    
+                    <input type="button"
+                        class="btn btn-danger"
+                        (click)="cancelData(newUserForm)"
+                        value="Cancel">
+        </div>
+           </div>
+     </form>
+    </div>
+</div>
+

@@ -1,0 +1,88 @@
+<div>
+    <button 
+    type="button"
+    class="btn btn-primary"
+    (click)="loadUserTable()">{{buttonName}}
+</button>
+<div *ngIf="displayData">
+  <table class="table table-striped table-dark" id="usertable">
+     <thead>
+         <tr>
+             <th *ngFor="let name of column">{{name}}</th>
+         </tr>
+     </thead>  
+      <tbody id="tableBody">
+        <tr *ngFor="let user of userData; index as row">
+            <td><input type="text"
+                class="tableTextBox"
+                name="firstname"
+                [readonly]="!editEnable[row]"
+                required
+                [(ngModel)]="userData[row].FirstName">
+            </td>
+
+            <td><input type="text"
+                class="tableTextBox"
+                name="middlename"
+                [readonly]="!editEnable[row]"
+                [(ngModel)]="userData[row].MiddleName">
+            </td>
+            <td><input type="text"
+                class="tableTextBox"
+                name="lastname"
+                [readonly]="!editEnable[row]"
+                required
+                [(ngModel)]="userData[row].LastName">
+            </td>
+            <td><input type="text"
+                class="tableTextBox"
+                name="email"
+                [readonly]="!editEnable[row]"
+                required
+                [(ngModel)]="userData[row].Email">
+            </td>
+            <td><input type="text"
+                class="tableTextBox"
+                name="phone"
+                [readonly]="!editEnable[row]"
+                required
+                [(ngModel)]="userData[row].phoneno">
+            </td>
+            <td><div *ngIf="editEnable[row]; else displayRole">
+                <select name="role"
+                    required
+                    (change)="changeRole(row, $event.target)"
+                    #role>
+                    <option *ngFor="let role of storeRole; index as ind"
+                        [attr.value]="ind" 
+                        [attr.selected]="ind == userData[row].role ? true : null"> {{ role }}</option>
+                </select>
+            </div>
+            <ng-template #displayRole>
+                <input type="text"
+                        class="tableTextBox"
+                        readonly
+                        [value]="Role[+userData[row].role]"> 
+            </ng-template>            
+            </td>
+             <td><input type="text"
+                class="tableTextBox"
+                name="address"
+                [readonly]="!editEnable[row]"
+                [(ngModel)]="userData[row].Address">
+            </td>
+            <td><input type="button"
+                class="btn btn-success"
+                [value]="editBtn[row]"
+                (click)="editData(row, $event.target)">
+            </td>
+            <td><input type="button"
+                class="btn btn-danger"
+                [value]="deleteBtn[row]"
+                (click)="deleteData(row, $event.target)">
+            </td>
+        </tr>        
+    </tbody>
+  </table>
+</div>
+</div> 
