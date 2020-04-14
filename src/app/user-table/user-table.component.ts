@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CrudService } from 'src/app/CRUD-Service';
 import { Role } from 'src/app/DataModels/enum-role';
 import {UserData} from 'src/app/DataModels/UserData';
@@ -14,7 +14,7 @@ Role=Role;
 displayData:boolean;
 buttonName:string;
 column:string[]=[];
-userData:UserData[]=[];
+@Input() userData:UserData[]=[];
 editBtn:string[]=[];
 deleteBtn:string[]=[];
 editEnable:boolean[]=[];
@@ -38,8 +38,9 @@ loadUserTable()
   this.buttonName="REFRESH DATA";
   this.crudService.fetchUser()
   .subscribe(response => {
-    this.userData = response;
-    this.copyData=cloneDeep(response); 
+    console.log(response);
+     this.userData = response;
+     this.copyData=cloneDeep(response); 
   },
   error => {
     console.log("Error ", error);
@@ -55,10 +56,17 @@ loadUserTable()
   deleteData(row: number, btn: HTMLTableCellElement){
     if(this.deleteBtn[row]=='Delete')
     {
-      this.userData.splice(row, 1);
-      this.editEnable.splice(row, 1);
-      this.editBtn.splice(row, 1);
-      this.deleteBtn.splice(row, 1);
+      this.crudService.delete(this.userData[row].empid)
+      .subscribe(response => {
+      },error =>{
+        console.log(error);
+      },
+      () => {
+        this.userData.splice(row, 1);
+        this.editEnable.splice(row, 1);
+        this.editBtn.splice(row, 1);
+        this.deleteBtn.splice(row, 1);
+      });
     }
     else{
       this.cancelData(row,btn);
@@ -78,11 +86,16 @@ loadUserTable()
   saveData(row: number, btn : HTMLTableCellElement)
   {
    if(this.editBtn[row]=='Save'){
-    this.editBtn[row]='Edit';
-    this.deleteBtn[row]='Delete';
-    this.editEnable[row] = false;
-    //console.log(this.userData[row]);
-    this.copyData[row]=cloneDeep(this.userData[row]);
+     this.crudService.update(this.userData[row])
+     .subscribe(response => {},
+      error =>{console.log(error)},
+      ()=>{
+        this.editBtn[row]='Edit';
+        this.deleteBtn[row]='Delete';
+        this.editEnable[row] = false;
+        //console.log(this.userData[row]);
+        this.copyData[row]=cloneDeep(this.userData[row]);
+      });
    }
   }
   cancelData(row: number, btn : HTMLTableCellElement)
@@ -99,5 +112,21 @@ loadUserTable()
   changeRole(row: number, selectTag: HTMLSelectElement) {
     this.userData[row].role = +selectTag.value;
   }
+  userAdded(addedUser:{firstName:string , middleName:string ,lastName:string, email:string,phoneNo:number,role:number,address:string})
+  {
+   // console.log(addedUser);
+    this.userData.push({empid:0,
+      firstname: addedUser.firstName,
+      middlename: addedUser.middleName,
+      lastname: addedUser.lastName,
+      email: addedUser.email,
+      phoneno: addedUser.phoneNo,
+      role: addedUser.role,
+      address: addedUser.address});
+      //console.log(this.userData.length);
+      this.editBtn[(this.userData.length)-1]="Edit";
+      this.deleteBtn[(this.userData.length)-1]="Delete";
+  } 
+  
 }
 
