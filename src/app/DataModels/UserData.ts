@@ -1,9 +1,10 @@
 export class UserData {
-    FirstName: string;
-    MiddleName: string;
-    LastName: string;
-    Email: string;
+    empid:number;
+    firstname: string;
+    middlename: string;
+    lastname: string;
+    email: string;
     phoneno: number;
     role: number;
-    Address: string;
+    address: string;
 }

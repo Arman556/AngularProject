@@ -5,7 +5,7 @@
 </button>
 <div *ngIf="UserForm">
         <div class="container">
-<form #newUserForm="ngForm">
+<form #newUserForm="ngForm" >
         <div class="container">
     <div class="form-row">
             <div class="col-md-4 mb-3">
@@ -14,16 +14,21 @@
                             class="form-control"
                             name="firstname"
                             required
-                            [(ngModel)]="userData.FirstName"
+                            [(ngModel)]="userData.firstname"
                             #firstname="ngModel">
                     </div>
-
+                    <div *ngIf="firstname.touched && firstname.invalid"
+                    class="alert alert-danger">
+                    <div *ngIf="firstname.errors.required">
+                        First Name is required.
+                    </div>
+                </div>
                     <div class="col-md-4 mb-3">
                         <label for="middlename">Middle Name</label>
                         <input type="text"
                             class="form-control"
                             name="middlename"
-                            [(ngModel)]="userData.MiddleName"
+                            [(ngModel)]="userData.middlename"
                             #middlename="ngModel">
                     </div>
 
@@ -33,9 +38,15 @@
                             class="form-control"
                             name="lastname"
                             required
-                            [(ngModel)]="userData.LastName"
+                            [(ngModel)]="userData.lastname"
                             #lastname="ngModel">
                     </div>
+                    <div *ngIf="lastname.touched && lastname.invalid"
+                    class="alert alert-danger">
+                    <div *ngIf="lastname.errors.required">
+                        Last Name is required.
+                    </div>
+                </div>
                 </div>
 
                 <div class="form-row">
@@ -46,9 +57,15 @@
                             name="email"
                             required
                             email
-                            [(ngModel)]="userData.Email"
+                            [(ngModel)]="userData.email"
                             #email="ngModel">
                     </div>
+                    <div *ngIf="email.touched && email.invalid"
+                            class="alert alert-danger">
+                            <div>
+                                Enter a valid email.
+                            </div>
+                        </div>
 
                     <div class="col-md-4 mb-3">
                         <label for="phone">Phone Number</label>
@@ -59,8 +76,16 @@
                             pattern="^((\\+91-?)|0)?[0-9]{10}$"
                             [(ngModel)]="userData.phoneno"
                             #phone="ngModel">
-
                     </div>
+                    <div *ngIf="phone.touched && phone.invalid"
+                            class="alert alert-danger">
+                            <div *ngIf="phone.errors.required">
+                                Phone Number is required.
+                            </div>
+                            <div *ngIf="phone.errors.pattern">
+                                Phone Number is invalid.
+                            </div>
+                        </div>
                 </div>
 
                 <div class="form-row">
@@ -80,13 +105,22 @@
                         <input type="text"
                             class="form-control"
                             name="address"
-                            [(ngModel)]="userData.Address">
+                            [(ngModel)]="userData.address"
+                            required
+                            #address="ngModel">
                     </div>
+                    <div *ngIf="address.touched && address.invalid"
+                    class="alert alert-danger">
+                    <div>
+                        Address is required.
+                    </div>
+                </div>
                 </div>
 
                 <div class="form-row">
                     <input type="button"
                         class="btn btn-success"
+                        [disabled]="!newUserForm.valid"
                         (click)="saveData(newUserForm)"
                         value="Save">
     
